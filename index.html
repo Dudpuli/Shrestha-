@@ -3,31 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dog Love Proposal</title>
+    <title>A Special Question for Shreshtha</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             background-color: #FFE4E1;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            overflow: hidden;
         }
         .container {
             text-align: center;
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0.8);
             padding: 2rem;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            z-index: 10;
+            max-width: 80%;
         }
         h1 {
             color: #FF69B4;
             margin-bottom: 1rem;
         }
-        .dog-image {
+        .photo-container {
             width: 200px;
-            margin-bottom: 1rem;
+            height: 200px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #FF69B4;
+        }
+        .photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         .btn {
             padding: 10px 20px;
@@ -50,36 +62,119 @@
             color: white;
             position: relative;
         }
+        .floating-item {
+            position: fixed;
+            font-size: 2rem;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .message {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+            text-align: center;
+            max-width: 80%;
+        }
+        .message h2 {
+            color: #FF69B4;
+        }
+        .message p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Will you be my girlfriend?</h1>
-        <img src="/placeholder.svg?height=200&width=200" alt="Cute Dog" class="dog-image">
-        <p>Woof! I love you!</p>
-        <button id="yesBtn" class="btn">Yes</button>
-        <button id="noBtn" class="btn">No</button>
+        <div class="photo-container">
+            <img src="/placeholder.svg?height=200&width=200" alt="Shreshtha" class="photo" id="shresthtaPhoto">
+        </div>
+        <h1>Shreshtha, will you be mine forever?</h1>
+        <p>My love for you is as endless as the sky ❤️</p>
+        <button id="yesBtn" class="btn">Yes, I will! 😍</button>
+        <button id="noBtn" class="btn">No 😢</button>
+    </div>
+
+    <div id="beautifulMessage" class="message">
+        <h2>My Dearest Shreshtha,</h2>
+        <p>Your "Yes" means the world to me. You've made me the happiest person alive! 🎉</p>
+        <p>Every moment with you is a treasure, and I promise to cherish and love you more with each passing day. 💖</p>
+        <p>Here's to our beautiful journey together, filled with love, laughter, and endless happiness. 🥂</p>
+        <p>I love you to the moon and back, my forever love! 🌙✨</p>
     </div>
 
     <script>
         const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
         const container = document.querySelector('.container');
+        const message = document.getElementById('beautifulMessage');
+
+        const emojis = ['🎈', '🎉', '💖', '😍', '🥰', '💕', '💓', '💗', '💞', '🌸', '🌺', '🌷'];
 
         noBtn.addEventListener('mouseover', () => {
-            const maxX = container.clientWidth - noBtn.clientWidth;
-            const maxY = container.clientHeight - noBtn.clientHeight;
+            const maxX = window.innerWidth - noBtn.clientWidth;
+            const maxY = window.innerHeight - noBtn.clientHeight;
             
             const randomX = Math.floor(Math.random() * maxX);
             const randomY = Math.floor(Math.random() * maxY);
             
-            noBtn.style.position = 'absolute';
+            noBtn.style.position = 'fixed';
             noBtn.style.left = `${randomX}px`;
             noBtn.style.top = `${randomY}px`;
         });
 
-        document.getElementById('yesBtn').addEventListener('click', () => {
-            alert('Woof woof! I love you too!');
+        yesBtn.addEventListener('click', () => {
+            celebrate();
+            message.style.display = 'block';
         });
+
+        function celebrate() {
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => createFloatingItem(), i * 100);
+            }
+        }
+
+        function createFloatingItem() {
+            const item = document.createElement('div');
+            item.classList.add('floating-item');
+            item.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+            item.style.left = Math.random() * 100 + 'vw';
+            item.style.top = '100vh';
+            item.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
+            item.style.opacity = Math.random() * 0.5 + 0.5;
+            item.style.transition = 'transform 0.5s ease, top 15s ease-out, left 15s ease-out';
+            document.body.appendChild(item);
+
+            setTimeout(() => {
+                item.style.transform += ' rotate(360deg)';
+                item.style.top = -100 + 'px';
+                item.style.left = Math.random() * 100 + 'vw';
+            }, 100);
+
+            setTimeout(() => {
+                document.body.removeChild(item);
+            }, 15000);
+        }
+
+        function createBackgroundItems() {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(createFloatingItem, i * 300);
+            }
+        }
+
+        // Create initial background items
+        createBackgroundItems();
+
+        // Continuously create new background items
+        setInterval(createBackgroundItems, 6000);
     </script>
 </body>
 </html>
